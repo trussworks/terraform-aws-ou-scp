@@ -1,1 +1,93 @@
-# Variables placeholder
+variable "protect_s3_bucket_resources" {
+  description = "S3 bucket resource ARNs to protect from bucket and object deletion"
+  type        = list(string)
+  default     = []
+}
+
+variable "protect_iam_role_resources" {
+  description = "IAM role resource ARNs to protect from modification and deletion"
+  type        = list(string)
+  default     = []
+}
+
+variable "allowed_regions" {
+  description = "AWS Regions allowed for use (for use with the restrict regions SCP)"
+  type        = list(string)
+  default     = [""]
+}
+
+variable "target" {
+  description = "OU resource to attach SCP"
+  type = object({
+    name = string
+    id   = string
+  })
+}
+
+# Policy Switches
+
+variable "deny_all" {
+  description = "If false, create a combined policy. If true, deny all access"
+  default     = false
+  type        = bool
+}
+
+variable "deny_root_account" {
+  description = "DenyRootAccount in the OU policy."
+  default     = false
+  type        = bool
+}
+
+variable "deny_leaving_orgs" {
+  description = "DenyLeavingOrgs in the OU policy."
+  default     = false
+  type        = bool
+}
+
+variable "deny_creating_iam_users" {
+  description = "DenyCreatingIAMUsers in the OU policy."
+  default     = false
+  type        = bool
+}
+
+variable "deny_deleting_kms_keys" {
+  description = "DenyDeletingKMSKeys in the OU policy."
+  default     = false
+  type        = bool
+}
+
+variable "deny_deleting_route53_zones" {
+  description = "DenyDeletingRoute53Zones in the OU policy."
+  default     = false
+  type        = bool
+}
+
+variable "require_s3_encryption" {
+  description = "RequireS3Encryption in the OU policy."
+  default     = false
+  type        = bool
+}
+
+variable "deny_deleting_cloudwatch_logs" {
+  description = "DenyDeletingCloudwatchLogs in the OU policy."
+  default     = false
+  type        = bool
+}
+
+variable "protect_s3_buckets" {
+  description = "ProtectS3Buckets in the OU policy."
+  default     = false
+  type        = bool
+}
+
+variable "protect_iam_roles" {
+  description = "ProtectIAMRoles in the OU policy."
+  default     = false
+  type        = bool
+}
+
+variable "limit_regions" {
+  description = "LimitRegions in the OU policy."
+  default     = false
+  type        = bool
+}

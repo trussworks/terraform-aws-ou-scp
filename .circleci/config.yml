@@ -3,8 +3,6 @@ jobs:
   validate:
     docker:
       - image: trussworks/circleci-docker-primary:c542b22c7fb95db0a1bbe043928a457ae6fbeaca
-        environment:
-          - TEST_RESULTS: /tmp/test-results
     steps:
       - checkout
       - restore_cache:
@@ -28,8 +26,6 @@ jobs:
           key: go-mod-sources-v1-{{ checksum "go.sum" }}-{{ checksum "scripts/check-go-version" }}
           paths:
             - "~/go/pkg/mod"
-      - store_test_results:
-          path: /tmp/test-results/gotest
 
 workflows:
   version: 2
