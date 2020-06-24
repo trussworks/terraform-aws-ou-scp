@@ -1,0 +1,38 @@
+version: 2
+jobs:
+  validate:
+    docker:
+      - image: trussworks/circleci-docker-primary:c542b22c7fb95db0a1bbe043928a457ae6fbeaca
+        environment:
+          - TEST_RESULTS: /tmp/test-results
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - pre-commit-dot-cache-{{ checksum ".pre-commit-config.yaml" }}
+            - go-mod-sources-v1-{{ checksum "go.sum" }}-{{ checksum "scripts/check-go-version" }}
+      - run:
+          name: Adding go binaries to $PATH
+          command: |
+            echo 'export PATH=${PATH}:~/go/bin' >> $BASH_ENV
+            source $BASH_ENV
+      - run: go get github.com/jstemmer/go-junit-report
+      - run:
+          name: Run pre-commit
+          command: pre-commit run --all-files
+      - save_cache:
+          key: pre-commit-dot-cache-{{ checksum ".pre-commit-config.yaml" }}
+          paths:
+            - ~/.cache/pre-commit
+      - save_cache:
+          key: go-mod-sources-v1-{{ checksum "go.sum" }}-{{ checksum "scripts/check-go-version" }}
+          paths:
+            - "~/go/pkg/mod"
+      - store_test_results:
+          path: /tmp/test-results/gotest
+
+workflows:
+  version: 2
+  validate:
+    jobs:
+      - validate
