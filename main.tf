@@ -1,15 +1,19 @@
 locals {
   # deny_root_account is default Allow
-  deny_root_account_effect             = var.deny_root_account ? "Allow" : "Deny"
-  deny_leaving_orgs_effect             = var.deny_leaving_orgs ? "Deny" : "Allow"
-  deny_creating_iam_users_effect       = var.deny_creating_iam_users ? "Deny" : "Allow"
-  deny_deleting_kms_keys_effect        = var.deny_deleting_kms_keys ? "Deny" : "Allow"
-  deny_deleting_route53_zones_effect   = var.deny_deleting_route53_zones ? "Deny" : "Allow"
+  deny_root_account_effect           = var.deny_root_account ? "Allow" : "Deny"
+  deny_leaving_orgs_effect           = var.deny_leaving_orgs ? "Deny" : "Allow"
+  deny_creating_iam_users_effect     = var.deny_creating_iam_users ? "Deny" : "Allow"
+  deny_deleting_kms_keys_effect      = var.deny_deleting_kms_keys ? "Deny" : "Allow"
+  deny_deleting_route53_zones_effect = var.deny_deleting_route53_zones ? "Deny" : "Allow"
+  # require_s3_encryption is default Allow
   require_s3_encryption_effect         = var.require_s3_encryption ? "Allow" : "Deny"
   deny_deleting_cloudwatch_logs_effect = var.deny_deleting_cloudwatch_logs ? "Deny" : "Allow"
-  protect_s3_buckets_effect            = var.protect_s3_buckets ? "Allow" : "Deny"
-  protect_iam_roles_effect             = var.protect_iam_roles ? "Allow" : "Deny"
-  limit_regions_effect                 = var.limit_regions ? "Deny" : "Allow"
+  # protect_s3_buckets is default Allow
+  protect_s3_buckets_effect = var.protect_s3_buckets ? "Allow" : "Deny"
+  # protect_iam_roles is default Allow
+  protect_iam_roles_effect = var.protect_iam_roles ? "Allow" : "Deny"
+  # limit_regions is default Allow
+  limit_regions_effect = var.limit_regions ? "Allow" : "Deny"
 }
 
 #
