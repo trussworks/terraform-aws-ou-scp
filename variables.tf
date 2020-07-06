@@ -32,12 +32,6 @@ variable "deny_all" {
   type        = bool
 }
 
-variable "deny_root_account" {
-  description = "DenyRootAccount in the OU policy."
-  default     = false
-  type        = bool
-}
-
 variable "deny_leaving_orgs" {
   description = "DenyLeavingOrgs in the OU policy."
   default     = false
@@ -64,6 +58,20 @@ variable "deny_deleting_route53_zones" {
 
 variable "deny_deleting_cloudwatch_logs" {
   description = "DenyDeletingCloudwatchLogs in the OU policy."
+  default     = false
+  type        = bool
+}
+
+# Policy Statement Switches (AWS allows "Deny" effect only)
+
+variable "deny_root_account" {
+  description = "DenyRootAccount in the OU policy."
+  default     = false
+  type        = bool
+}
+
+variable "require_s3_encryption" {
+  description = "RequireS3Encryption in the OU policy."
   default     = false
   type        = bool
 }
