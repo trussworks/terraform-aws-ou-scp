@@ -6,7 +6,7 @@ locals {
   deny_deleting_route53_zones_effect   = var.deny_deleting_route53_zones ? "Deny" : "Allow"
   deny_deleting_cloudwatch_logs_effect = var.deny_deleting_cloudwatch_logs ? "Deny" : "Allow"
   protect_s3_buckets_effect            = var.protect_s3_buckets ? ["Deny"] : []
-  protect_iam_roles_effect             = var.protect_iam_roles ? "Deny" : "Allow"
+  protect_iam_roles_effect             = var.protect_iam_roles ? ["Deny"] : []
   limit_regions_effect                 = var.limit_regions ? "Deny" : "Allow"
 }
 
@@ -148,23 +148,25 @@ data "aws_iam_policy_document" "combined_policy_block" {
   #
   # Protect IAM Roles
   #
-
-  statement {
-    sid    = "ProtectIAMRoles"
-    effect = "Deny"
-    actions = [
-      "iam:AttachRolePolicy",
-      "iam:DeleteRole",
-      "iam:DeleteRolePermissionsBoundary",
-      "iam:DeleteRolePolicy",
-      "iam:DetachRolePolicy",
-      "iam:PutRolePermissionsBoundary",
-      "iam:PutRolePolicy",
-      "iam:UpdateAssumeRolePolicy",
-      "iam:UpdateRole",
-      "iam:UpdateRoleDescription"
-    ]
-    resources = var.protect_iam_role_resources
+  dynamic "statement" {
+    for_each = local.protect_iam_roles_effect
+    content {
+      sid    = "ProtectIAMRoles"
+      effect = "Deny"
+      actions = [
+        "iam:AttachRolePolicy",
+        "iam:DeleteRole",
+        "iam:DeleteRolePermissionsBoundary",
+        "iam:DeleteRolePolicy",
+        "iam:DetachRolePolicy",
+        "iam:PutRolePermissionsBoundary",
+        "iam:PutRolePolicy",
+        "iam:UpdateAssumeRolePolicy",
+        "iam:UpdateRole",
+        "iam:UpdateRoleDescription"
+      ]
+      resources = var.protect_iam_role_resources
+    }
   }
 
   #
