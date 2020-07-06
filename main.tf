@@ -7,7 +7,7 @@ locals {
   deny_deleting_cloudwatch_logs_effect = var.deny_deleting_cloudwatch_logs ? "Deny" : "Allow"
   protect_s3_buckets_effect            = var.protect_s3_buckets ? ["Deny"] : []
   protect_iam_roles_effect             = var.protect_iam_roles ? ["Deny"] : []
-  limit_regions_effect                 = var.limit_regions ? "Deny" : "Allow"
+  limit_regions_effect                 = var.limit_regions ? ["Deny"] : []
 }
 
 #
@@ -173,31 +173,34 @@ data "aws_iam_policy_document" "combined_policy_block" {
   # Restrict Regional Operations
   #
 
-  statement {
-    sid    = "LimitRegions"
-    effect = local.limit_regions_effect
+  dynamic "statement" {
+    for_each = local.limit_regions_effect
+    content {
+      sid    = "LimitRegions"
+      effect = "Deny"
 
-    # These actions do not operate in a specific region, or only run in
-    # a single region, so we don't want to try restricting them by region.
-    not_actions = [
-      "iam:*",
-      "organizations:*",
-      "route53:*",
-      "budgets:*",
-      "waf:*",
-      "cloudfront:*",
-      "globalaccelerator:*",
-      "importexport:*",
-      "support:*",
-      "sts:*"
-    ]
+      # These actions do not operate in a specific region, or only run in
+      # a single region, so we don't want to try restricting them by region.
+      not_actions = [
+        "iam:*",
+        "organizations:*",
+        "route53:*",
+        "budgets:*",
+        "waf:*",
+        "cloudfront:*",
+        "globalaccelerator:*",
+        "importexport:*",
+        "support:*",
+        "sts:*"
+      ]
 
-    resources = ["*"]
+      resources = ["*"]
 
-    condition {
-      test     = "StringNotEquals"
-      variable = "aws:RequestedRegion"
-      values   = var.allowed_regions
+      condition {
+        test     = "StringNotEquals"
+        variable = "aws:RequestedRegion"
+        values   = var.allowed_regions
+      }
     }
   }
 }

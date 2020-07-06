@@ -1,13 +1,13 @@
 variable "protect_s3_bucket_resources" {
   description = "S3 bucket resource ARNs to protect from bucket and object deletion"
   type        = list(string)
-  default     = []
+  default     = [""]
 }
 
 variable "protect_iam_role_resources" {
   description = "IAM role resource ARNs to protect from modification and deletion"
   type        = list(string)
-  default     = []
+  default     = [""]
 }
 
 variable "allowed_regions" {

@@ -109,9 +109,9 @@ module "scp_test_scp" {
 | deny\_leaving\_orgs | DenyLeavingOrgs in the OU policy. | `bool` | `false` | no |
 | deny\_root\_account | DenyRootAccount in the OU policy. | `bool` | `false` | no |
 | limit\_regions | LimitRegions in the OU policy. | `bool` | `false` | no |
-| protect\_iam\_role\_resources | IAM role resource ARNs to protect from modification and deletion | `list(string)` | `[]` | no |
+| protect\_iam\_role\_resources | IAM role resource ARNs to protect from modification and deletion | `list(string)` | <pre>[<br>  ""<br>]</pre> | no |
 | protect\_iam\_roles | ProtectIAMRoles in the OU policy. | `bool` | `false` | no |
-| protect\_s3\_bucket\_resources | S3 bucket resource ARNs to protect from bucket and object deletion | `list(string)` | `[]` | no |
+| protect\_s3\_bucket\_resources | S3 bucket resource ARNs to protect from bucket and object deletion | `list(string)` | <pre>[<br>  ""<br>]</pre> | no |
 | protect\_s3\_buckets | ProtectS3Buckets in the OU policy. | `bool` | `true` | no |
 | target | OU resource to attach SCP | <pre>object({<br>    name = string<br>    id   = string<br>  })</pre> | n/a | yes |
 
