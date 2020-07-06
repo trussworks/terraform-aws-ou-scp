@@ -5,6 +5,10 @@ Supports two main use cases:
 * Combines multiple Service Control Policies (SCP) statements based on the policies defined in [`terraform-aws-org-scp`](https://github.com/trussworks/terraform-aws-org-scp). Creating a single policy allows more than 5 policies to be be applied to a single Organizational Unit (OU).
 * Alternatively, creates a "Deny All Access" Service Control Policy.
 
+Certain assumptions are made when you choose to use a combined policy. The default "Deny" policies in the combined policy block are:
+
+* Protect S3 Buckets (ProtectS3Buckets) - included by default in the combined policy
+
 The following statements are included in the combined policy (listed by `sid`), with Deny/Allow toggled for each:
 
 * Deny root account (DenyRootAccount)
@@ -14,7 +18,6 @@ The following statements are included in the combined policy (listed by `sid`), 
 * Deny deleting Route53 Hosted Zones (DenyDeletingRoute53Zones)
 * Require S3 encryption (DenyIncorrectEncryptionHeader + DenyUnEncryptedObjectUploads)
 * Deny deleting VPC Flow logs, Cloudwatch log groups, and Cloudwatch log streams (DenyDeletingCloudwatchLogs)
-* Protect S3 Buckets (ProtectS3Buckets)
 * Protect IAM Roles (ProtectIAMRoles)
 * Restrict Regional Operations (LimitRegions)
 
@@ -43,8 +46,7 @@ module "ou_scp" {
   deny_creating_iam_users = true
   deny_deleting_kms_keys = true
   deny_deleting_route53_zones = true
-  # this must always be set to true
-  require_s3_encryption = true
+
   deny_deleting_cloudwatch_logs = true
 
   limit_regions = true
@@ -111,7 +113,6 @@ module "scp_test_scp" {
 | protect\_iam\_roles | ProtectIAMRoles in the OU policy. | `bool` | `false` | no |
 | protect\_s3\_bucket\_resources | S3 bucket resource ARNs to protect from bucket and object deletion | `list(string)` | `[]` | no |
 | protect\_s3\_buckets | ProtectS3Buckets in the OU policy. | `bool` | `false` | no |
-| require\_s3\_encryption | RequireS3Encryption in the OU policy. | `bool` | `true` | no |
 | target | OU resource to attach SCP | <pre>object({<br>    name = string<br>    id   = string<br>  })</pre> | n/a | yes |
 
 ## Outputs

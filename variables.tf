@@ -62,12 +62,6 @@ variable "deny_deleting_route53_zones" {
   type        = bool
 }
 
-variable "require_s3_encryption" {
-  description = "RequireS3Encryption in the OU policy."
-  default     = true
-  type        = bool
-}
-
 variable "deny_deleting_cloudwatch_logs" {
   description = "DenyDeletingCloudwatchLogs in the OU policy."
   default     = false
