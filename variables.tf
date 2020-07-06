@@ -68,12 +68,6 @@ variable "deny_deleting_cloudwatch_logs" {
   type        = bool
 }
 
-variable "protect_s3_buckets" {
-  description = "ProtectS3Buckets in the OU policy."
-  default     = false
-  type        = bool
-}
-
 variable "protect_iam_roles" {
   description = "ProtectIAMRoles in the OU policy."
   default     = false
