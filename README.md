@@ -13,13 +13,16 @@ The following statements are included in the combined policy (listed by `sid`), 
 * Deny deleting Route53 Hosted Zones (DenyDeletingRoute53Zones)
 * Deny deleting VPC Flow logs, Cloudwatch log groups, and Cloudwatch log streams (DenyDeletingCloudwatchLogs)
 
-Certain policies exist only as "Deny" policies in AWS, and therefore do not have a "Deny/Allow" toggle. These policies are simply not included in the combined policy unless explicitly set to `true`:
+Some policies exist only as "Deny" policies in AWS, and therefore do not have a "Deny/Allow" toggle. These policies are simply not included in the combined policy unless explicitly set to `true`:
 
 * Deny root account (DenyRootAccount)
-* Require S3 encryption (DenyIncorrectEncryptionHeader + DenyUnEncryptedObjectUploads)
 * Protect S3 Buckets (ProtectS3Buckets) - included by default in the combined policy
 * Protect IAM Roles (ProtectIAMRoles)
 * Restrict Regional Operations (LimitRegions)
+
+S3 Encryption is a required policy in the combined policy block, and is automatically included as a default "Deny" policy:
+
+* Require S3 encryption (DenyIncorrectEncryptionHeader + DenyUnEncryptedObjectUploads)
 
 ## Terraform Versions
 
@@ -113,7 +116,6 @@ module "scp_test_scp" {
 | protect\_iam\_roles | ProtectIAMRoles in the OU policy. | `bool` | `false` | no |
 | protect\_s3\_bucket\_resources | S3 bucket resource ARNs to protect from bucket and object deletion | `list(string)` | <pre>[<br>  ""<br>]</pre> | no |
 | protect\_s3\_buckets | ProtectS3Buckets in the OU policy. | `bool` | `true` | no |
-| require\_s3\_encryption | RequireS3Encryption in the OU policy. | `bool` | `false` | no |
 | target | OU resource to attach SCP | <pre>object({<br>    name = string<br>    id   = string<br>  })</pre> | n/a | yes |
 
 ## Outputs

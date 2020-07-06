@@ -70,12 +70,6 @@ variable "deny_root_account" {
   type        = bool
 }
 
-variable "require_s3_encryption" {
-  description = "RequireS3Encryption in the OU policy."
-  default     = false
-  type        = bool
-}
-
 variable "protect_s3_buckets" {
   description = "ProtectS3Buckets in the OU policy."
   default     = true

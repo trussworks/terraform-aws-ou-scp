@@ -1,11 +1,10 @@
 locals {
-  deny_root_account_effect             = var.deny_root_account ? ["Deny"] : []
   deny_leaving_orgs_effect             = var.deny_leaving_orgs ? "Deny" : "Allow"
   deny_creating_iam_users_effect       = var.deny_creating_iam_users ? "Deny" : "Allow"
   deny_deleting_kms_keys_effect        = var.deny_deleting_kms_keys ? "Deny" : "Allow"
   deny_deleting_route53_zones_effect   = var.deny_deleting_route53_zones ? "Deny" : "Allow"
-  require_s3_encryption_effect         = var.require_s3_encryption ? ["Deny"] : []
   deny_deleting_cloudwatch_logs_effect = var.deny_deleting_cloudwatch_logs ? "Deny" : "Allow"
+  deny_root_account_effect             = var.deny_root_account ? ["Deny"] : []
   protect_s3_buckets_effect            = var.protect_s3_buckets ? ["Deny"] : []
   protect_iam_roles_effect             = var.protect_iam_roles ? ["Deny"] : []
   limit_regions_effect                 = var.limit_regions ? ["Deny"] : []
@@ -16,25 +15,6 @@ locals {
 #
 
 data "aws_iam_policy_document" "combined_policy_block" {
-
-  #
-  # Deny root account
-  #
-
-  dynamic "statement" {
-    for_each = local.deny_root_account_effect
-    content {
-      sid       = "DenyRootAccount"
-      actions   = ["*"]
-      resources = ["*"]
-      effect    = "Deny"
-      condition {
-        test     = "StringLike"
-        variable = "aws:PrincipalArn"
-        values   = ["arn:aws:iam::*:root"]
-      }
-    }
-  }
 
   #
   # Deny leaving AWS Organizations
@@ -89,37 +69,6 @@ data "aws_iam_policy_document" "combined_policy_block" {
   }
 
   #
-  # Require S3 encryption
-  #
-  # https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingServerSideEncryption.html
-
-  dynamic "statement" {
-    for_each = local.deny_root_account_effect
-    content {
-      sid       = "DenyIncorrectEncryptionHeader"
-      effect    = "Deny"
-      actions   = ["s3:PutObject"]
-      resources = ["*"]
-      condition {
-        test     = "StringNotEquals"
-        variable = "s3:x-amz-server-side-encryption"
-        values   = ["AES256"]
-      }
-    }
-    content {
-      sid       = "DenyUnEncryptedObjectUploads"
-      effect    = "Deny"
-      actions   = ["s3:PutObject"]
-      resources = ["*"]
-      condition {
-        test     = "Null"
-        variable = "s3:x-amz-server-side-encryption"
-        values   = [true]
-      }
-    }
-  }
-
-  #
   # Deny deleting VPC Flow logs, cloudwatch log groups, and cloudwatch log streams
   #
 
@@ -132,6 +81,25 @@ data "aws_iam_policy_document" "combined_policy_block" {
       "logs:DeleteLogStream"
     ]
     resources = ["*"]
+  }
+
+  #
+  # Deny root account
+  #
+
+  dynamic "statement" {
+    for_each = local.deny_root_account_effect
+    content {
+      sid       = "DenyRootAccount"
+      actions   = ["*"]
+      resources = ["*"]
+      effect    = "Deny"
+      condition {
+        test     = "StringLike"
+        variable = "aws:PrincipalArn"
+        values   = ["arn:aws:iam::*:root"]
+      }
+    }
   }
 
   #
@@ -208,6 +176,34 @@ data "aws_iam_policy_document" "combined_policy_block" {
         variable = "aws:RequestedRegion"
         values   = var.allowed_regions
       }
+    }
+  }
+
+  #
+  # Require S3 encryption
+  #
+  # https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingServerSideEncryption.html
+
+  statement {
+    sid       = "DenyIncorrectEncryptionHeader"
+    effect    = "Deny"
+    actions   = ["s3:PutObject"]
+    resources = ["*"]
+    condition {
+      test     = "StringNotEquals"
+      variable = "s3:x-amz-server-side-encryption"
+      values   = ["AES256"]
+    }
+  }
+  statement {
+    sid       = "DenyUnEncryptedObjectUploads"
+    effect    = "Deny"
+    actions   = ["s3:PutObject"]
+    resources = ["*"]
+    condition {
+      test     = "Null"
+      variable = "s3:x-amz-server-side-encryption"
+      values   = [true]
     }
   }
 }
