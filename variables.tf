@@ -34,7 +34,7 @@ variable "deny_all" {
 
 variable "deny_root_account" {
   description = "DenyRootAccount in the OU policy."
-  default     = false
+  default     = true
   type        = bool
 }
 

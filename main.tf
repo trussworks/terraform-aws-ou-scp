@@ -1,5 +1,6 @@
 locals {
-  deny_root_account_effect             = var.deny_root_account ? "Deny" : "Allow"
+  # deny_root_account is default Allow
+  deny_root_account_effect             = var.deny_root_account ? "Allow" : "Deny"
   deny_leaving_orgs_effect             = var.deny_leaving_orgs ? "Deny" : "Allow"
   deny_creating_iam_users_effect       = var.deny_creating_iam_users ? "Deny" : "Allow"
   deny_deleting_kms_keys_effect        = var.deny_deleting_kms_keys ? "Deny" : "Allow"
