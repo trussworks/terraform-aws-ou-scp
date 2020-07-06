@@ -106,7 +106,7 @@ data "aws_iam_policy_document" "combined_policy_block" {
         values   = ["AES256"]
       }
     }
-    statement {
+    content {
       sid       = "DenyUnEncryptedObjectUploads"
       effect    = "Deny"
       actions   = ["s3:PutObject"]
