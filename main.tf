@@ -5,10 +5,10 @@ locals {
   deny_creating_iam_users_effect       = var.deny_creating_iam_users ? "Deny" : "Allow"
   deny_deleting_kms_keys_effect        = var.deny_deleting_kms_keys ? "Deny" : "Allow"
   deny_deleting_route53_zones_effect   = var.deny_deleting_route53_zones ? "Deny" : "Allow"
-  require_s3_encryption_effect         = var.require_s3_encryption ? "Deny" : "Allow"
+  require_s3_encryption_effect         = var.require_s3_encryption ? "Allow" : "Deny"
   deny_deleting_cloudwatch_logs_effect = var.deny_deleting_cloudwatch_logs ? "Deny" : "Allow"
-  protect_s3_buckets_effect            = var.protect_s3_buckets ? "Deny" : "Allow"
-  protect_iam_roles_effect             = var.protect_iam_roles ? "Deny" : "Allow"
+  protect_s3_buckets_effect            = var.protect_s3_buckets ? "Allow" : "Deny"
+  protect_iam_roles_effect             = var.protect_iam_roles ? "Allow" : "Deny"
   limit_regions_effect                 = var.limit_regions ? "Deny" : "Allow"
 }
 
