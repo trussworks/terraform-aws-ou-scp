@@ -4,7 +4,6 @@ locals {
   deny_creating_iam_users_effect       = var.deny_creating_iam_users ? "Deny" : "Allow"
   deny_deleting_kms_keys_effect        = var.deny_deleting_kms_keys ? "Deny" : "Allow"
   deny_deleting_route53_zones_effect   = var.deny_deleting_route53_zones ? "Deny" : "Allow"
-  require_s3_encryption_effect         = var.require_s3_encryption ? "Deny" : "Allow"
   deny_deleting_cloudwatch_logs_effect = var.deny_deleting_cloudwatch_logs ? "Deny" : "Allow"
   protect_s3_buckets_effect            = var.protect_s3_buckets ? "Deny" : "Allow"
   protect_iam_roles_effect             = var.protect_iam_roles ? "Deny" : "Allow"
@@ -92,7 +91,7 @@ data "aws_iam_policy_document" "combined_policy_block" {
 
   statement {
     sid       = "DenyIncorrectEncryptionHeader"
-    effect    = local.require_s3_encryption_effect
+    effect    = "Deny"
     actions   = ["s3:PutObject"]
     resources = ["*"]
     condition {
@@ -103,7 +102,7 @@ data "aws_iam_policy_document" "combined_policy_block" {
   }
   statement {
     sid       = "DenyUnEncryptedObjectUploads"
-    effect    = local.require_s3_encryption_effect
+    effect    = "Deny"
     actions   = ["s3:PutObject"]
     resources = ["*"]
     condition {

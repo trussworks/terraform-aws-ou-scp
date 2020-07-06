@@ -64,7 +64,7 @@ variable "deny_deleting_route53_zones" {
 
 variable "require_s3_encryption" {
   description = "RequireS3Encryption in the OU policy."
-  default     = false
+  default     = true
   type        = bool
 }
 
