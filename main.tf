@@ -5,6 +5,7 @@ locals {
   deny_deleting_kms_keys_effect        = var.deny_deleting_kms_keys ? "Deny" : "Allow"
   deny_deleting_route53_zones_effect   = var.deny_deleting_route53_zones ? "Deny" : "Allow"
   deny_deleting_cloudwatch_logs_effect = var.deny_deleting_cloudwatch_logs ? "Deny" : "Allow"
+  protect_s3_buckets_effect            = var.protect_s3_buckets ? ["Deny"] : []
   protect_iam_roles_effect             = var.protect_iam_roles ? "Deny" : "Allow"
   limit_regions_effect                 = var.limit_regions ? "Deny" : "Allow"
 }
@@ -130,15 +131,18 @@ data "aws_iam_policy_document" "combined_policy_block" {
   # Protect S3 Buckets
   #
 
-  statement {
-    sid    = "ProtectS3Buckets"
-    effect = "Deny"
-    actions = [
-      "s3:DeleteBucket",
-      "s3:DeleteObject",
-      "s3:DeleteObjectVersion",
-    ]
-    resources = var.protect_s3_bucket_resources
+  dynamic "statement" {
+    for_each = local.protect_s3_buckets_effect
+    content {
+      sid    = "ProtectS3Buckets"
+      effect = "Deny"
+      actions = [
+        "s3:DeleteBucket",
+        "s3:DeleteObject",
+        "s3:DeleteObjectVersion",
+      ]
+      resources = var.protect_s3_bucket_resources
+    }
   }
 
   #
