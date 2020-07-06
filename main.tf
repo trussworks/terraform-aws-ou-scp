@@ -147,7 +147,7 @@ data "aws_iam_policy_document" "combined_policy_block" {
 
   statement {
     sid    = "ProtectIAMRoles"
-    effect = local.protect_iam_roles_effect
+    effect = "Deny"
     actions = [
       "iam:AttachRolePolicy",
       "iam:DeleteRole",
