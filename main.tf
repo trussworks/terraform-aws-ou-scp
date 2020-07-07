@@ -1,13 +1,13 @@
 locals {
-  deny_leaving_orgs_effect             = var.deny_leaving_orgs ? "Deny" : "Allow"
-  deny_creating_iam_users_effect       = var.deny_creating_iam_users ? "Deny" : "Allow"
-  deny_deleting_kms_keys_effect        = var.deny_deleting_kms_keys ? "Deny" : "Allow"
-  deny_deleting_route53_zones_effect   = var.deny_deleting_route53_zones ? "Deny" : "Allow"
-  deny_deleting_cloudwatch_logs_effect = var.deny_deleting_cloudwatch_logs ? "Deny" : "Allow"
-  deny_root_account_effect             = var.deny_root_account ? ["Deny"] : []
-  protect_s3_buckets_effect            = var.protect_s3_buckets ? ["Deny"] : []
-  protect_iam_roles_effect             = var.protect_iam_roles ? ["Deny"] : []
-  limit_regions_effect                 = var.limit_regions ? ["Deny"] : []
+  deny_leaving_orgs_statement             = var.deny_leaving_orgs ? [""] : []
+  deny_creating_iam_users_statement       = var.deny_creating_iam_users ? [""] : []
+  deny_deleting_kms_keys_statement        = var.deny_deleting_kms_keys ? [""] : []
+  deny_deleting_route53_zones_statement   = var.deny_deleting_route53_zones ? [""] : []
+  deny_deleting_cloudwatch_logs_statement = var.deny_deleting_cloudwatch_logs ? [""] : []
+  deny_root_account_statement             = var.deny_root_account ? [""] : []
+  protect_s3_buckets_statement            = var.protect_s3_buckets ? [""] : []
+  protect_iam_roles_statement             = var.protect_iam_roles ? [""] : []
+  limit_regions_statement                 = var.limit_regions ? [""] : []
 }
 
 #
@@ -20,67 +20,82 @@ data "aws_iam_policy_document" "combined_policy_block" {
   # Deny leaving AWS Organizations
   #
 
-  statement {
-    sid       = "DenyLeavingOrgs"
-    effect    = local.deny_leaving_orgs_effect
-    actions   = ["organizations:LeaveOrganization"]
-    resources = ["*"]
+  dynamic "statement" {
+    for_each = local.deny_leaving_orgs_statement
+    content {
+      sid       = "DenyLeavingOrgs"
+      effect    = "Deny"
+      actions   = ["organizations:LeaveOrganization"]
+      resources = ["*"]
+    }
   }
 
   #
   # Deny creating IAM users or access keys
   #
 
-  statement {
-    sid    = "DenyCreatingIAMUsers"
-    effect = local.deny_creating_iam_users_effect
-    actions = [
-      "iam:CreateUser",
-      "iam:CreateAccessKey"
-    ]
-    resources = ["*"]
+  dynamic "statement" {
+    for_each = local.deny_creating_iam_users_statement
+    content {
+      sid    = "DenyCreatingIAMUsers"
+      effect = "Deny"
+      actions = [
+        "iam:CreateUser",
+        "iam:CreateAccessKey"
+      ]
+      resources = ["*"]
+    }
   }
 
   #
   # Deny deleting KMS Keys
   #
 
-  statement {
-    sid    = "DenyDeletingKMSKeys"
-    effect = local.deny_deleting_kms_keys_effect
-    actions = [
-      "kms:ScheduleKeyDeletion",
-      "kms:Delete*"
-    ]
-    resources = ["*"]
+  dynamic "statement" {
+    for_each = local.deny_deleting_kms_keys_statement
+    content {
+      sid    = "DenyDeletingKMSKeys"
+      effect = "Deny"
+      actions = [
+        "kms:ScheduleKeyDeletion",
+        "kms:Delete*"
+      ]
+      resources = ["*"]
+    }
   }
 
   #
   # Deny deleting Route53 Hosted Zones
   #
 
-  statement {
-    sid    = "DenyDeletingRoute53Zones"
-    effect = local.deny_deleting_route53_zones_effect
-    actions = [
-      "route53:DeleteHostedZone"
-    ]
-    resources = ["*"]
+  dynamic "statement" {
+    for_each = local.deny_deleting_route53_zones_statement
+    content {
+      sid    = "DenyDeletingRoute53Zones"
+      effect = "Deny"
+      actions = [
+        "route53:DeleteHostedZone"
+      ]
+      resources = ["*"]
+    }
   }
 
   #
   # Deny deleting VPC Flow logs, cloudwatch log groups, and cloudwatch log streams
   #
 
-  statement {
-    sid    = "DenyDeletingCloudwatchLogs"
-    effect = local.deny_deleting_cloudwatch_logs_effect
-    actions = [
-      "ec2:DeleteFlowLogs",
-      "logs:DeleteLogGroup",
-      "logs:DeleteLogStream"
-    ]
-    resources = ["*"]
+  dynamic "statement" {
+    for_each = local.deny_deleting_cloudwatch_logs_statement
+    content {
+      sid    = "DenyDeletingCloudwatchLogs"
+      effect = "Deny"
+      actions = [
+        "ec2:DeleteFlowLogs",
+        "logs:DeleteLogGroup",
+        "logs:DeleteLogStream"
+      ]
+      resources = ["*"]
+    }
   }
 
   #
@@ -88,7 +103,7 @@ data "aws_iam_policy_document" "combined_policy_block" {
   #
 
   dynamic "statement" {
-    for_each = local.deny_root_account_effect
+    for_each = local.deny_root_account_statement
     content {
       sid       = "DenyRootAccount"
       actions   = ["*"]
@@ -107,7 +122,7 @@ data "aws_iam_policy_document" "combined_policy_block" {
   #
 
   dynamic "statement" {
-    for_each = local.protect_s3_buckets_effect
+    for_each = local.protect_s3_buckets_statement
     content {
       sid    = "ProtectS3Buckets"
       effect = "Deny"
@@ -124,7 +139,7 @@ data "aws_iam_policy_document" "combined_policy_block" {
   # Protect IAM Roles
   #
   dynamic "statement" {
-    for_each = local.protect_iam_roles_effect
+    for_each = local.protect_iam_roles_statement
     content {
       sid    = "ProtectIAMRoles"
       effect = "Deny"
@@ -149,7 +164,7 @@ data "aws_iam_policy_document" "combined_policy_block" {
   #
 
   dynamic "statement" {
-    for_each = local.limit_regions_effect
+    for_each = local.limit_regions_statement
     content {
       sid    = "LimitRegions"
       effect = "Deny"

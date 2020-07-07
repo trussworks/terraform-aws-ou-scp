@@ -5,22 +5,19 @@ Supports two main use cases:
 * Combines multiple Service Control Policies (SCP) statements based on the policies defined in [`terraform-aws-org-scp`](https://github.com/trussworks/terraform-aws-org-scp). Creating a single policy allows more than 5 policies to be be applied to a single Organizational Unit (OU).
 * Alternatively, creates a "Deny All Access" Service Control Policy.
 
-The following statements are included in the combined policy (listed by `sid`), with Deny/Allow toggled for each:
+TODO: Something something bool. Policy options (listed by `sid`) are:
 
 * Deny leaving AWS Organizations (DenyLeavingOrgs)
 * Deny creating IAM users or access keys (DenyCreatingIAMUsers)
 * Deny deleting KMS Keys (DenyDeletingKMSKeys)
 * Deny deleting Route53 Hosted Zones (DenyDeletingRoute53Zones)
 * Deny deleting VPC Flow logs, Cloudwatch log groups, and Cloudwatch log streams (DenyDeletingCloudwatchLogs)
-
-Some policies exist only as "Deny" policies in AWS, and therefore do not have a "Deny/Allow" toggle. These policies are simply not included in the combined policy unless explicitly set to `true`:
-
 * Deny root account (DenyRootAccount)
 * Protect S3 Buckets (ProtectS3Buckets) - included by default in the combined policy
 * Protect IAM Roles (ProtectIAMRoles)
 * Restrict Regional Operations (LimitRegions)
 
-S3 Encryption is a required policy in the combined policy block, and is automatically included as a default "Deny" policy:
+S3 Encryption is a required policy in the combined policy block, and is automatically included:
 
 * Require S3 encryption (DenyIncorrectEncryptionHeader + DenyUnEncryptedObjectUploads)
 
@@ -39,7 +36,7 @@ module "ou_scp" {
   source = "trussworks/ou-scp"
   target =  aws_organizations_organizational_unit.my_ou
 
-  # true means the policy is in effect
+  # true means the policy is included
 
   deny_root_account = true
   deny_leaving_orgs = true
