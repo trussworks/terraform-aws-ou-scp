@@ -113,9 +113,7 @@ module "scp_test_scp" {
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| scp\_policy\_json | Outputs placeholder |
+No output.
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
