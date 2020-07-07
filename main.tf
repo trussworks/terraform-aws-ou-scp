@@ -7,16 +7,17 @@ locals {
   # This results in the default setting of `false`, and
   # the dynamic `for_each` statement will return an array with an empty string,
   # and the statement will not be included.
-  deny_leaving_orgs_statement             = var.deny_leaving_orgs ? [""] : []
-  deny_creating_iam_users_statement       = var.deny_creating_iam_users ? [""] : []
-  deny_deleting_kms_keys_statement        = var.deny_deleting_kms_keys ? [""] : []
-  deny_deleting_route53_zones_statement   = var.deny_deleting_route53_zones ? [""] : []
-  deny_deleting_cloudwatch_logs_statement = var.deny_deleting_cloudwatch_logs ? [""] : []
-  deny_root_account_statement             = var.deny_root_account ? [""] : []
-  protect_s3_buckets_statement            = var.protect_s3_buckets ? [""] : []
-  protect_iam_roles_statement             = var.protect_iam_roles ? [""] : []
-  limit_regions_statement                 = var.limit_regions ? [""] : []
-  require_s3_encryption_statements        = var.require_s3_encryption ? [""] : []
+  deny_leaving_orgs_statement                = var.deny_leaving_orgs ? [""] : []
+  deny_creating_iam_users_statement          = var.deny_creating_iam_users ? [""] : []
+  deny_deleting_kms_keys_statement           = var.deny_deleting_kms_keys ? [""] : []
+  deny_deleting_route53_zones_statement      = var.deny_deleting_route53_zones ? [""] : []
+  deny_deleting_cloudwatch_logs_statement    = var.deny_deleting_cloudwatch_logs ? [""] : []
+  deny_root_account_statement                = var.deny_root_account ? [""] : []
+  protect_s3_buckets_statement               = var.protect_s3_buckets ? [""] : []
+  protect_iam_roles_statement                = var.protect_iam_roles ? [""] : []
+  limit_regions_statement                    = var.limit_regions ? [""] : []
+  deny_unencrypted_object_uploads_statement  = var.require_s3_encryption ? [""] : []
+  deny_incorrect_encryption_header_statement = var.require_s3_encryption ? [""] : []
 }
 
 #
@@ -209,8 +210,8 @@ data "aws_iam_policy_document" "combined_policy_block" {
   # https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingServerSideEncryption.html
 
   dynamic "statement" {
-    for_each = local.require_s3_encryption_statements
-    statement {
+    for_each = local.deny_incorrect_encryption_header_statement
+    content {
       sid       = "DenyIncorrectEncryptionHeader"
       effect    = "Deny"
       actions   = ["s3:PutObject"]
@@ -221,7 +222,11 @@ data "aws_iam_policy_document" "combined_policy_block" {
         values   = ["AES256"]
       }
     }
-    statement {
+  }
+
+  dynamic "statement" {
+    for_each = local.deny_unencrypted_object_uploads_statement
+    content {
       sid       = "DenyUnEncryptedObjectUploads"
       effect    = "Deny"
       actions   = ["s3:PutObject"]
