@@ -87,3 +87,9 @@ variable "limit_regions" {
   default     = false
   type        = bool
 }
+
+variable "require_s3_encryption" {
+  description = "DenyIncorrectEncryptionHeader and DenyUnEncryptedObjectUploads in the OU policy"
+  default     = false
+  type        = bool
+}
