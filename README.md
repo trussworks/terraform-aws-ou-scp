@@ -16,10 +16,8 @@ Policy options (listed by `sid`) are:
 * Protect S3 Buckets (ProtectS3Buckets) - included by default in the combined policy
 * Protect IAM Roles (ProtectIAMRoles)
 * Restrict Regional Operations (LimitRegions)
-
-S3 Encryption is a required policy in the combined policy block, and is automatically included:
-
 * Require S3 encryption (DenyIncorrectEncryptionHeader + DenyUnEncryptedObjectUploads)
+
 
 ## Terraform Versions
 
@@ -40,20 +38,14 @@ module "ou_scp" {
 
   # true means the policy is included
 
-  deny_root_account = true
-  deny_leaving_orgs = true
+  deny_leaving_orgs             = true
   deny_creating_iam_users = true
-  deny_deleting_kms_keys = true
-  deny_deleting_route53_zones = true
-
+  deny_deleting_kms_keys        = true
+  deny_deleting_route53_zones   = true
   deny_deleting_cloudwatch_logs = true
-
-  limit_regions = true
-  # - restrict region-specific operations to us-west-2
-  allowed_regions                  = ["us-west-2"]
+  deny_root_account     = true
 
   protect_s3_buckets = true
-  # - protect terraform statefile bucket
   protect_s3_bucket_resources = [
     "arn:aws:s3:::prod-terraform-state-us-west-2",
     "arn:aws:s3:::prod-terraform-state-us-west-2/*"
@@ -64,6 +56,11 @@ module "ou_scp" {
   protect_iam_role_resources = [
     "arn:aws:iam::*:role/OrganizationAccountAccessRole"
   ]
+  limit_regions = true
+  # - restrict region-specific operations to us-west-2
+  allowed_regions = ["us-west-2"]
+
+  require_s3_encryption = true
 }
 ```
 

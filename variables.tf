@@ -1,21 +1,3 @@
-variable "protect_s3_bucket_resources" {
-  description = "S3 bucket resource ARNs to protect from bucket and object deletion"
-  type        = list(string)
-  default     = [""]
-}
-
-variable "protect_iam_role_resources" {
-  description = "IAM role resource ARNs to protect from modification and deletion"
-  type        = list(string)
-  default     = [""]
-}
-
-variable "allowed_regions" {
-  description = "AWS Regions allowed for use (for use with the restrict regions SCP)"
-  type        = list(string)
-  default     = [""]
-}
-
 variable "target" {
   description = "OU resource to attach SCP"
   type = object({
@@ -24,13 +6,13 @@ variable "target" {
   })
 }
 
-# Policy Switches
-
 variable "deny_all" {
   description = "If false, create a combined policy. If true, deny all access"
   default     = false
   type        = bool
 }
+
+# Policy Statement Switches
 
 variable "deny_leaving_orgs" {
   description = "DenyLeavingOrgs in the OU policy."
@@ -62,8 +44,6 @@ variable "deny_deleting_cloudwatch_logs" {
   type        = bool
 }
 
-# Policy Statement Switches (AWS allows "Deny" effect only)
-
 variable "deny_root_account" {
   description = "DenyRootAccount in the OU policy."
   default     = false
@@ -92,4 +72,24 @@ variable "require_s3_encryption" {
   description = "DenyIncorrectEncryptionHeader and DenyUnEncryptedObjectUploads in the OU policy"
   default     = false
   type        = bool
+}
+
+# Policy-specific resources
+
+variable "protect_s3_bucket_resources" {
+  description = "S3 bucket resource ARNs to protect from bucket and object deletion"
+  type        = list(string)
+  default     = [""]
+}
+
+variable "protect_iam_role_resources" {
+  description = "IAM role resource ARNs to protect from modification and deletion"
+  type        = list(string)
+  default     = [""]
+}
+
+variable "allowed_regions" {
+  description = "AWS Regions allowed for use (for use with the restrict regions SCP)"
+  type        = list(string)
+  default     = [""]
 }
