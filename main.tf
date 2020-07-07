@@ -1,4 +1,12 @@
 locals {
+  # Each policy variable is set to a bool, defaulting to false (not included).
+  # Include a policy by setting a policy variable to `true`, passing the hard-coded "Deny" statment
+  # into the combined policy block.
+
+  # Exclude a policy from the combined policy by omitting the policy variable in the module call.
+  # This results in the default setting of `false`, and
+  # the dynamic `for_each` statement will return an array with an empty string,
+  # and the statement will not be included.
   deny_leaving_orgs_statement             = var.deny_leaving_orgs ? [""] : []
   deny_creating_iam_users_statement       = var.deny_creating_iam_users ? [""] : []
   deny_deleting_kms_keys_statement        = var.deny_deleting_kms_keys ? [""] : []

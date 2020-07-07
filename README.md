@@ -5,7 +5,7 @@ Supports two main use cases:
 * Combines multiple Service Control Policies (SCP) statements based on the policies defined in [`terraform-aws-org-scp`](https://github.com/trussworks/terraform-aws-org-scp). Creating a single policy allows more than 5 policies to be be applied to a single Organizational Unit (OU).
 * Alternatively, creates a "Deny All Access" Service Control Policy.
 
-TODO: Something something bool. Policy options (listed by `sid`) are:
+Policy options (listed by `sid`) are:
 
 * Deny leaving AWS Organizations (DenyLeavingOrgs)
 * Deny creating IAM users or access keys (DenyCreatingIAMUsers)
@@ -29,6 +29,8 @@ Terraform 0.12. Pin module version to ~> 2.0. Submit pull-requests to master bra
 Terraform 0.11. Pin module version to ~> 1.0. Submit pull-requests to terraform011 branch.
 
 ### Usage for combined policy statements
+
+To include a policy in your combined policy block, set it to `true`. Otherwise omit the policy variable.
 
 ```hcl
 // TODO: make sure these references to module names are correct once pushed to the registry
