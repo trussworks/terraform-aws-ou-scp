@@ -37,10 +37,7 @@ Terraform 0.11. Pin module version to ~> 1.0. Submit pull-requests to terraform0
 // TODO: make sure these references to module names are correct once pushed to the registry
 module "ou_scp" {
   source = "trussworks/ou-scp"
-  target = {
-    name = "my_ou"
-    id = aws_organizations_organizational_unit.my_ou.id
-  }
+  target =  aws_organizations_organizational_unit.my_ou
 
   # true means the policy is in effect
 
@@ -77,10 +74,7 @@ module "ou_scp" {
 module "scp_test_scp" {
   # source needs to be the most recent commit hash
   source = "trussworks/ou-scp"
-  target = {
-    name = "my_ou"
-    id = aws_organizations_organizational_unit.my_ou.id
-  }
+  target =  aws_organizations_organizational_unit.my_ou
 
   deny_all=true
 }
@@ -115,7 +109,7 @@ module "scp_test_scp" {
 | protect\_iam\_role\_resources | IAM role resource ARNs to protect from modification and deletion | `list(string)` | <pre>[<br>  ""<br>]</pre> | no |
 | protect\_iam\_roles | ProtectIAMRoles in the OU policy. | `bool` | `false` | no |
 | protect\_s3\_bucket\_resources | S3 bucket resource ARNs to protect from bucket and object deletion | `list(string)` | <pre>[<br>  ""<br>]</pre> | no |
-| protect\_s3\_buckets | ProtectS3Buckets in the OU policy. | `bool` | `true` | no |
+| protect\_s3\_buckets | ProtectS3Buckets in the OU policy. | `bool` | `false` | no |
 | target | OU resource to attach SCP | <pre>object({<br>    name = string<br>    id   = string<br>  })</pre> | n/a | yes |
 
 ## Outputs

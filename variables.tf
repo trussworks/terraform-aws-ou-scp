@@ -72,7 +72,7 @@ variable "deny_root_account" {
 
 variable "protect_s3_buckets" {
   description = "ProtectS3Buckets in the OU policy."
-  default     = true
+  default     = false
   type        = bool
 }
 
