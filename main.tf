@@ -16,7 +16,7 @@ locals {
   protect_s3_buckets_statement            = var.protect_s3_buckets ? [""] : []
   protect_iam_roles_statement             = var.protect_iam_roles ? [""] : []
   limit_regions_statement                 = var.limit_regions ? [""] : []
-  require_s3_encryption_statement         = var.require_s3_encryption ? [""] : []
+  require_s3_encryption_statements        = var.require_s3_encryption ? [""] : []
 }
 
 #
@@ -209,8 +209,8 @@ data "aws_iam_policy_document" "combined_policy_block" {
   # https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingServerSideEncryption.html
 
   dynamic "statement" {
-    for_each = local.require_s3_encryption_statement
-    content {
+    for_each = local.require_s3_encryption_statements
+    statement {
       sid       = "DenyIncorrectEncryptionHeader"
       effect    = "Deny"
       actions   = ["s3:PutObject"]
@@ -221,12 +221,7 @@ data "aws_iam_policy_document" "combined_policy_block" {
         values   = ["AES256"]
       }
     }
-  }
-
-
-  dynamic "statement" {
-    for_each = local.require_s3_encryption_statement
-    content {
+    statement {
       sid       = "DenyUnEncryptedObjectUploads"
       effect    = "Deny"
       actions   = ["s3:PutObject"]
@@ -239,8 +234,6 @@ data "aws_iam_policy_document" "combined_policy_block" {
     }
   }
 }
-
-
 
 
 #
