@@ -2,8 +2,10 @@
 
 Supports two main use cases:
 
-* Combines multiple Service Control Policies (SCP) statements based on the policies defined in [`terraform-aws-org-scp`](https://github.com/trussworks/terraform-aws-org-scp). Creating a single policy allows more than 5 policies to be be applied to a single Organizational Unit (OU).
+* Combines multiple Service Control Policy (SCP) statements based on the policies defined in [`terraform-aws-org-scp`](https://github.com/trussworks/terraform-aws-org-scp). Combining multiple policy statements into a single policy allows more than 5 policies to be be applied to a single Organizational Unit (OU).
 * Alternatively, creates a "Deny All Access" Service Control Policy.
+
+ Alternatively, enables creation of a "Deny All Access" Service Control Policy.
 
 Policy options (listed by `sid`) are:
 
@@ -13,7 +15,7 @@ Policy options (listed by `sid`) are:
 * Deny deleting Route53 Hosted Zones (DenyDeletingRoute53Zones)
 * Deny deleting VPC Flow logs, Cloudwatch log groups, and Cloudwatch log streams (DenyDeletingCloudwatchLogs)
 * Deny root account (DenyRootAccount)
-* Protect S3 Buckets (ProtectS3Buckets) - included by default in the combined policy
+* Protect S3 Buckets (ProtectS3Buckets)
 * Protect IAM Roles (ProtectIAMRoles)
 * Restrict Regional Operations (LimitRegions)
 * Require S3 encryption (DenyIncorrectEncryptionHeader + DenyUnEncryptedObjectUploads)
@@ -31,35 +33,42 @@ Terraform 0.11. Pin module version to ~> 1.0. Submit pull-requests to terraform0
 To include a policy in your combined policy block, set it to `true`. Otherwise omit the policy variable.
 
 ```hcl
-// TODO: make sure these references to module names are correct once pushed to the registry
-module "ou_scp" {
-  source = "trussworks/ou-scp"
+module "github_terraform_aws_ou_scp" {
+  source = "trussworks/ou-scp/aws"
   target =  aws_organizations_organizational_unit.my_ou
 
-  # true means the policy is included
-
+  # don't allow all accounts to be able to leave the org
   deny_leaving_orgs             = true
-  deny_creating_iam_users = true
+  # applies to accounts that are not managing IAM users
+  deny_creating_iam_users       = true
+  # don't allow deleting KMS keys
   deny_deleting_kms_keys        = true
+  # don't allow deleting Route53 zones
   deny_deleting_route53_zones   = true
+  # don't allow deleting CloudWatch logs
   deny_deleting_cloudwatch_logs = true
-  deny_root_account     = true
+  # don't allow access to the root user
+  deny_root_account             = true
 
-  protect_s3_buckets = true
-  protect_s3_bucket_resources = [
+  protect_s3_buckets            = true
+  # protect terraform statefile bucket
+  protect_s3_bucket_resources   = [
     "arn:aws:s3:::prod-terraform-state-us-west-2",
     "arn:aws:s3:::prod-terraform-state-us-west-2/*"
   ]
 
-  protect_iam_roles = true
+  protect_iam_roles             = true
   # - protect OrganizationAccountAccessRole
-  protect_iam_role_resources = [
+  protect_iam_role_resources     = [
     "arn:aws:iam::*:role/OrganizationAccountAccessRole"
   ]
-  limit_regions = true
-  # - restrict region-specific operations to us-west-2
-  allowed_regions = ["us-west-2"]
 
+  # restrict region-specific operations to us-west-2
+  limit_regions                 = true
+  # - restrict region-specific operations to us-west-2
+  allowed_regions               = ["us-west-2"]
+
+  # require s3 objects be encrypted
   require_s3_encryption = true
 }
 ```
@@ -67,11 +76,11 @@ module "ou_scp" {
 ### Usage for a policy which denies all access
 
 ```hcl
-module "scp_test_scp" {
-  # source needs to be the most recent commit hash
-  source = "trussworks/ou-scp"
+module "github_terraform_aws_ou_scp" {
+  source = "trussworks/ou-scp/aws"
   target =  aws_organizations_organizational_unit.my_ou
 
+  # don't allow any access at all
   deny_all=true
 }
 ```
