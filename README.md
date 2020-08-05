@@ -20,14 +20,6 @@ Policy options (listed by `sid`) are:
 * Restrict Regional Operations (LimitRegions)
 * Require S3 encryption (DenyIncorrectEncryptionHeader + DenyUnEncryptedObjectUploads)
 
-
-## Terraform Versions
-
-_This is how we're managing the different versions._
-Terraform 0.12. Pin module version to ~> 2.0. Submit pull-requests to master branch.
-
-Terraform 0.11. Pin module version to ~> 1.0. Submit pull-requests to terraform011 branch.
-
 ### Usage for combined policy statements
 
 To include a policy in your combined policy block, set it to `true`. Otherwise omit the policy variable.
