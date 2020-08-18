@@ -151,7 +151,6 @@ data "aws_iam_policy_document" "combined_policy_block" {
   # Deny S3 Bucket Access (will not override an account-level setting)
   #
 
-
   dynamic "statement" {
     for_each = local.deny_s3_bucket_access_statement
     content {
@@ -163,9 +162,6 @@ data "aws_iam_policy_document" "combined_policy_block" {
       resources = var.deny_s3_bucket_access
     }
   }
-
-
-
 
   #
   # Protect IAM Roles
