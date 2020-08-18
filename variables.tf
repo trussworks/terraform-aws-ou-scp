@@ -82,6 +82,12 @@ variable "protect_s3_bucket_resources" {
   default     = [""]
 }
 
+variable "deny_s3_bucket_access" {
+  description = "S3 bucket resource ARNs to block public access to resources"
+  type        = list(string)
+  default     = [""]
+}
+
 variable "protect_iam_role_resources" {
   description = "IAM role resource ARNs to protect from modification and deletion"
   type        = list(string)

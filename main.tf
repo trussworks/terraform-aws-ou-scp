@@ -14,6 +14,7 @@ locals {
   deny_deleting_cloudwatch_logs_statement    = var.deny_deleting_cloudwatch_logs ? [""] : []
   deny_root_account_statement                = var.deny_root_account ? [""] : []
   protect_s3_buckets_statement               = var.protect_s3_buckets ? [""] : []
+  deny_s3_bucket_access_statement            = var.deny_s3_bucket_access ? [""] : []
   protect_iam_roles_statement                = var.protect_iam_roles ? [""] : []
   limit_regions_statement                    = var.limit_regions ? [""] : []
   deny_unencrypted_object_uploads_statement  = var.require_s3_encryption ? [""] : []
@@ -145,9 +146,31 @@ data "aws_iam_policy_document" "combined_policy_block" {
     }
   }
 
+
+  #
+  # Deny S3 Bucket Access (will not override an account-level setting)
+  #
+
+
+  dynamic "statement" {
+    for_each = local.deny_s3_bucket_access_statement
+    content {
+      sid    = "DenyS3BucketAccess"
+      effect = "Deny"
+      actions = [
+        "s3:PutBucketPublicAccessBlock",
+      ]
+      resources = var.deny_s3_bucket_access
+    }
+  }
+
+
+
+
   #
   # Protect IAM Roles
   #
+
   dynamic "statement" {
     for_each = local.protect_iam_roles_statement
     content {

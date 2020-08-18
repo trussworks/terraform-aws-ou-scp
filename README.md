@@ -16,6 +16,7 @@ Policy options (listed by `sid`) are:
 * Deny deleting VPC Flow logs, Cloudwatch log groups, and Cloudwatch log streams (DenyDeletingCloudwatchLogs)
 * Deny root account (DenyRootAccount)
 * Protect S3 Buckets (ProtectS3Buckets)
+* Protect S3 Bucket Access ()
 * Protect IAM Roles (ProtectIAMRoles)
 * Restrict Regional Operations (LimitRegions)
 * Require S3 encryption (DenyIncorrectEncryptionHeader + DenyUnEncryptedObjectUploads)
@@ -48,6 +49,10 @@ module "github_terraform_aws_ou_scp" {
     "arn:aws:s3:::prod-terraform-state-us-west-2",
     "arn:aws:s3:::prod-terraform-state-us-west-2/*"
   ]
+
+  # don't allow public access to bucket resources
+  #
+  deny_s3_bucket_access = true
 
   protect_iam_roles             = true
   # - protect OrganizationAccountAccessRole
@@ -103,6 +108,7 @@ module "github_terraform_aws_ou_scp" {
 | deny\_deleting\_route53\_zones | DenyDeletingRoute53Zones in the OU policy. | `bool` | `false` | no |
 | deny\_leaving\_orgs | DenyLeavingOrgs in the OU policy. | `bool` | `false` | no |
 | deny\_root\_account | DenyRootAccount in the OU policy. | `bool` | `false` | no |
+| deny\_s3\_bucket\_access | S3 bucket resource ARNs to block public access to resources | `list(string)` | <pre>[<br>  ""<br>]</pre> | no |
 | limit\_regions | LimitRegions in the OU policy. | `bool` | `false` | no |
 | protect\_iam\_role\_resources | IAM role resource ARNs to protect from modification and deletion | `list(string)` | <pre>[<br>  ""<br>]</pre> | no |
 | protect\_iam\_roles | ProtectIAMRoles in the OU policy. | `bool` | `false` | no |
