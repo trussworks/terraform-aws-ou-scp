@@ -16,6 +16,7 @@ Policy options (listed by `sid`) are:
 * Deny deleting VPC Flow logs, Cloudwatch log groups, and Cloudwatch log streams (DenyDeletingCloudwatchLogs)
 * Deny root account (DenyRootAccount)
 * Protect S3 Buckets (ProtectS3Buckets)
+* Deny S3 Buckets Public Access (DenyS3BucketsPublicAccess)
 * Protect IAM Roles (ProtectIAMRoles)
 * Restrict Regional Operations (LimitRegions)
 * Require S3 encryption (DenyIncorrectEncryptionHeader + DenyUnEncryptedObjectUploads)
@@ -47,6 +48,12 @@ module "github_terraform_aws_ou_scp" {
   protect_s3_bucket_resources   = [
     "arn:aws:s3:::prod-terraform-state-us-west-2",
     "arn:aws:s3:::prod-terraform-state-us-west-2/*"
+  ]
+
+  # don't allow public access to bucket
+  deny_s3_bucket_public_access = true
+  deny_s3_bucket_public_access_resources = [
+    "arn:aws:s3:::log-delivery-august-2020"
   ]
 
   protect_iam_roles             = true
@@ -103,6 +110,8 @@ module "github_terraform_aws_ou_scp" {
 | deny\_deleting\_route53\_zones | DenyDeletingRoute53Zones in the OU policy. | `bool` | `false` | no |
 | deny\_leaving\_orgs | DenyLeavingOrgs in the OU policy. | `bool` | `false` | no |
 | deny\_root\_account | DenyRootAccount in the OU policy. | `bool` | `false` | no |
+| deny\_s3\_bucket\_public\_access\_resources | S3 bucket resource ARNs to block public access | `list(string)` | <pre>[<br>  ""<br>]</pre> | no |
+| deny\_s3\_buckets\_public\_access | DenyS3BucketsPublicAccess in the OU policy. | `bool` | `false` | no |
 | limit\_regions | LimitRegions in the OU policy. | `bool` | `false` | no |
 | protect\_iam\_role\_resources | IAM role resource ARNs to protect from modification and deletion | `list(string)` | <pre>[<br>  ""<br>]</pre> | no |
 | protect\_iam\_roles | ProtectIAMRoles in the OU policy. | `bool` | `false` | no |

@@ -56,6 +56,12 @@ variable "protect_s3_buckets" {
   type        = bool
 }
 
+variable "deny_s3_buckets_public_access" {
+  description = "DenyS3BucketsPublicAccess in the OU policy."
+  default     = false
+  type        = bool
+}
+
 variable "protect_iam_roles" {
   description = "ProtectIAMRoles in the OU policy."
   default     = false
@@ -78,6 +84,12 @@ variable "require_s3_encryption" {
 
 variable "protect_s3_bucket_resources" {
   description = "S3 bucket resource ARNs to protect from bucket and object deletion"
+  type        = list(string)
+  default     = [""]
+}
+
+variable "deny_s3_bucket_public_access_resources" {
+  description = "S3 bucket resource ARNs to block public access"
   type        = list(string)
   default     = [""]
 }
