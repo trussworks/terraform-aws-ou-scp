@@ -239,7 +239,7 @@ data "aws_iam_policy_document" "combined_policy_block" {
       condition {
         test     = "StringNotEquals"
         variable = "s3:x-amz-server-side-encryption"
-        values   = ["AES256"]
+        values   = ["AES256", "aws:kms"]
       }
     }
   }
