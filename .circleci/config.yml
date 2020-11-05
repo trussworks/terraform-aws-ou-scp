@@ -1,37 +1,44 @@
-version: 2.1
-
-references:
-  circleci: &circleci trussworks/circleci:6986bb9022e5a83599feb66a7128a2d0fa12732a
 jobs:
   validate:
     docker:
-      - image: *circleci
+    - auth:
+        password: $DOCKER_PASSWORD
+        username: $DOCKER_USERNAME
+      image: trussworks/circleci:6986bb9022e5a83599feb66a7128a2d0fa12732a
     steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - pre-commit-dot-cache-{{ checksum ".pre-commit-config.yaml" }}
-            - go-mod-sources-v1-{{ checksum "go.sum" }}-{{ checksum "scripts/check-go-version" }}
-      - run:
-          name: Adding go binaries to $PATH
-          command: |
-            echo 'export PATH=${PATH}:~/go/bin' >> $BASH_ENV
-            source $BASH_ENV
-      - run: go get github.com/jstemmer/go-junit-report
-      - run:
-          name: Run pre-commit
-          command: pre-commit run --all-files
-      - save_cache:
-          key: pre-commit-dot-cache-{{ checksum ".pre-commit-config.yaml" }}
-          paths:
-            - ~/.cache/pre-commit
-      - save_cache:
-          key: go-mod-sources-v1-{{ checksum "go.sum" }}-{{ checksum "scripts/check-go-version" }}
-          paths:
-            - "~/go/pkg/mod"
+    - checkout
+    - restore_cache:
+        keys:
+        - pre-commit-dot-cache-{{ checksum ".pre-commit-config.yaml" }}
+        - go-mod-sources-v1-{{ checksum "go.sum" }}-{{ checksum "scripts/check-go-version"
+          }}
+    - run:
+        command: 'echo ''export PATH=${PATH}:~/go/bin'' >> $BASH_ENV
 
+          source $BASH_ENV
+
+          '
+        name: Adding go binaries to $PATH
+    - run: go get github.com/jstemmer/go-junit-report
+    - run:
+        command: pre-commit run --all-files
+        name: Run pre-commit
+    - save_cache:
+        key: pre-commit-dot-cache-{{ checksum ".pre-commit-config.yaml" }}
+        paths:
+        - ~/.cache/pre-commit
+    - save_cache:
+        key: go-mod-sources-v1-{{ checksum "go.sum" }}-{{ checksum "scripts/check-go-version"
+          }}
+        paths:
+        - ~/go/pkg/mod
+references:
+  circleci: trussworks/circleci:6986bb9022e5a83599feb66a7128a2d0fa12732a
+version: 2.1
 workflows:
-  version: 2.1
   validate:
     jobs:
-      - validate
+    - validate:
+        context:
+        - org-global
+  version: 2.1
