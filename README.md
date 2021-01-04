@@ -51,7 +51,7 @@ module "github_terraform_aws_ou_scp" {
   ]
 
   # don't allow public access to bucket
-  deny_s3_bucket_public_access = true
+  deny_s3_buckets_public_access = true
   deny_s3_bucket_public_access_resources = [
     "arn:aws:s3:::log-delivery-august-2020"
   ]
