@@ -2,7 +2,7 @@
 
 Supports two main use cases:
 
-* Combines multiple Service Control Policy (SCP) statements based on the policies defined in [`terraform-aws-org-scp`](https://github.com/trussworks/terraform-aws-org-scp). Combining multiple policy statements into a single policy allows more than 5 policies to be be applied to a single Organizational Unit (OU).
+* Combines multiple Service Control Policy (SCP) statements - based on the module [`terraform-aws-org-scp`](https://github.com/trussworks/terraform-aws-org-scp) (_deprecated_). Combining multiple policy statements into a single policy allows more than 5 policies to be be applied to a single Organizational Unit (OU).
 * Alternatively, creates a "Deny All Access" Service Control Policy.
 
  Alternatively, enables creation of a "Deny All Access" Service Control Policy.
@@ -69,6 +69,11 @@ module "github_terraform_aws_ou_scp" {
 
   # require s3 objects be encrypted
   require_s3_encryption = true
+
+  # SCP policy tags
+  tags = {
+    managed_by = "terraform"
+  }
 }
 ```
 
@@ -119,6 +124,7 @@ module "github_terraform_aws_ou_scp" {
 | protect\_s3\_buckets | ProtectS3Buckets in the OU policy. | `bool` | `false` | no |
 | require\_s3\_encryption | DenyIncorrectEncryptionHeader and DenyUnEncryptedObjectUploads in the OU policy | `bool` | `false` | no |
 | target | OU resource to attach SCP | <pre>object({<br>    name = string<br>    id   = string<br>  })</pre> | n/a | yes |
+| tags | Tags to attach to the SCP policy resource | `map(string)` | <pre>[]</pre> | no |
 
 ## Outputs
 
