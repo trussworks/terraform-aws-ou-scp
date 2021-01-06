@@ -109,5 +109,5 @@ variable "allowed_regions" {
 variable "tags" {
   description = "Tags applied to the SCP policy"
   type        = map(string)
-  default     = []
+  default     = {}
 }
