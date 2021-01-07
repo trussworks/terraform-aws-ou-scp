@@ -1,10 +1,13 @@
+version: 2.1
+
 jobs:
   validate:
     docker:
-    - auth:
-        password: $DOCKER_PASSWORD
-        username: $DOCKER_USERNAME
-      image: trussworks/circleci:6986bb9022e5a83599feb66a7128a2d0fa12732a
+      - auth:
+          password: $DOCKER_PASSWORD
+          username: $DOCKER_USERNAME
+      - image: trussworks/circleci:efb1042e31538677779971798e0912390f699e72
+
     steps:
     - checkout
     - restore_cache:
