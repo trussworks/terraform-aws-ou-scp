@@ -202,6 +202,7 @@ data "aws_iam_policy_document" "combined_policy_block" {
       # These actions do not operate in a specific region, or only run in
       # a single region, so we don't want to try restricting them by region.
       not_actions = [
+        "access-analyzer:*",
         "iam:*",
         "organizations:*",
         "route53:*",
