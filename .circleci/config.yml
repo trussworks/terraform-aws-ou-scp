@@ -37,7 +37,6 @@ jobs:
         - ~/go/pkg/mod
 references:
   circleci: trussworks/circleci:6986bb9022e5a83599feb66a7128a2d0fa12732a
-version: 2.1
 workflows:
   validate:
     jobs:
