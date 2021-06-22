@@ -201,6 +201,8 @@ data "aws_iam_policy_document" "combined_policy_block" {
 
       # These actions do not operate in a specific region, or only run in
       # a single region, so we don't want to try restricting them by region.
+      # List of actions can be found in the following example:
+      # https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps_examples_general.html
       not_actions = [
         "access-analyzer:*",
         "iam:*",
@@ -212,7 +214,35 @@ data "aws_iam_policy_document" "combined_policy_block" {
         "globalaccelerator:*",
         "importexport:*",
         "support:*",
-        "sts:*"
+        "sts:*",
+        "pricing:*",
+        "a4b:*",
+        "acm:*",
+        "aws-marketplace-management:*",
+        "aws-marketplace:*",
+        "aws-portal:*",
+        "ce:*",
+        "chime:*",
+        "config:*",
+        "cur:*",
+        "directconnect:*",
+        "ec2:DescribeRegions",
+        "ec2:DescribeTransitGateways",
+        "ec2:DescribeVpnGateways",
+        "fms:*",
+        "health:*",
+        "kms:*",
+        "mobileanalytics:*",
+        "networkmanager:*",
+        "route53domains:*",
+        "s3:GetAccountPublic*",
+        "s3:ListAllMyBuckets",
+        "s3:PutAccountPublic*",
+        "shield:*",
+        "trustedadvisor:*",
+        "waf-regional:*",
+        "wafv2:*",
+        "wellarchitected:*"
       ]
 
       resources = ["*"]
