@@ -18,6 +18,7 @@ Policy options (listed by `sid`) are:
 * Protect S3 Buckets (ProtectS3Buckets)
 * Deny S3 Buckets Public Access (DenyS3BucketsPublicAccess)
 * Protect IAM Roles (ProtectIAMRoles)
+* Restrict EC2 Instance Types (LimitEC2InstanceTypes)
 * Restrict Regional Operations (LimitRegions)
 * Require S3 encryption (DenyIncorrectEncryptionHeader + DenyUnEncryptedObjectUploads)
 
@@ -61,6 +62,10 @@ module "github_terraform_aws_ou_scp" {
   protect_iam_role_resources     = [
     "arn:aws:iam::*:role/OrganizationAccountAccessRole"
   ]
+
+  # restrict EC2 instance types
+  limit_ec2_instance_types = true
+  allowed_regions          = ["t2.medium"]
 
   # restrict region-specific operations to us-west-2
   limit_regions                 = true
@@ -120,6 +125,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_allowed_ec2_instance_types"></a> [allowed\_ec2\_instance\_types](#input\_allowed\_ec2\_instance\_types) | EC2 instances types allowed for use | `list(string)` | <pre>[<br>  ""<br>]</pre> | no |
 | <a name="input_allowed_regions"></a> [allowed\_regions](#input\_allowed\_regions) | AWS Regions allowed for use (for use with the restrict regions SCP) | `list(string)` | <pre>[<br>  ""<br>]</pre> | no |
 | <a name="input_deny_all"></a> [deny\_all](#input\_deny\_all) | If false, create a combined policy. If true, deny all access | `bool` | `false` | no |
 | <a name="input_deny_creating_iam_users"></a> [deny\_creating\_iam\_users](#input\_deny\_creating\_iam\_users) | DenyCreatingIAMUsers in the OU policy. | `bool` | `false` | no |
@@ -130,6 +136,7 @@ No modules.
 | <a name="input_deny_root_account"></a> [deny\_root\_account](#input\_deny\_root\_account) | DenyRootAccount in the OU policy. | `bool` | `false` | no |
 | <a name="input_deny_s3_bucket_public_access_resources"></a> [deny\_s3\_bucket\_public\_access\_resources](#input\_deny\_s3\_bucket\_public\_access\_resources) | S3 bucket resource ARNs to block public access | `list(string)` | <pre>[<br>  ""<br>]</pre> | no |
 | <a name="input_deny_s3_buckets_public_access"></a> [deny\_s3\_buckets\_public\_access](#input\_deny\_s3\_buckets\_public\_access) | DenyS3BucketsPublicAccess in the OU policy. | `bool` | `false` | no |
+| <a name="input_limit_ec2_instance_types"></a> [limit\_ec2\_instance\_types](#input\_limit\_ec2\_instance\_types) | LimitEC2InstanceTypes in the OU policy. | `bool` | `false` | no |
 | <a name="input_limit_regions"></a> [limit\_regions](#input\_limit\_regions) | LimitRegions in the OU policy. | `bool` | `false` | no |
 | <a name="input_protect_iam_role_resources"></a> [protect\_iam\_role\_resources](#input\_protect\_iam\_role\_resources) | IAM role resource ARNs to protect from modification and deletion | `list(string)` | <pre>[<br>  ""<br>]</pre> | no |
 | <a name="input_protect_iam_roles"></a> [protect\_iam\_roles](#input\_protect\_iam\_roles) | ProtectIAMRoles in the OU policy. | `bool` | `false` | no |
