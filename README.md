@@ -64,8 +64,8 @@ module "github_terraform_aws_ou_scp" {
   ]
 
   # restrict EC2 instance types
-  limit_ec2_instance_types = true
-  allowed_regions          = ["t2.medium"]
+  limit_ec2_instance_types   = true
+  allowed_ec2_instance_types = ["t2.medium"]
 
   # restrict region-specific operations to us-west-2
   limit_regions                 = true
