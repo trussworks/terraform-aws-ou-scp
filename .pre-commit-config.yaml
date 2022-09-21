@@ -31,18 +31,3 @@ repos:
     hooks:
       - id: terraform_docs
       - id: terraform_fmt
-
-  - repo: https://github.com/golangci/golangci-lint
-    rev: v1.47.0
-
-    hooks:
-      - id: golangci-lint
-
-  - repo: local
-    hooks:
-      - id: gomod
-        name: gomod
-        entry: scripts/pre-commit-go-mod
-        language: script
-        files: go.mod
-        pass_filenames: false
