@@ -26,14 +26,14 @@ repos:
       - id: markdownlint
 
   - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.45.0
+    rev: v1.75.0
 
     hooks:
       - id: terraform_docs
       - id: terraform_fmt
 
   - repo: https://github.com/golangci/golangci-lint
-    rev: v1.33.0
+    rev: v1.46.0
 
     hooks:
       - id: golangci-lint
