@@ -68,6 +68,12 @@ variable "protect_iam_roles" {
   type        = bool
 }
 
+variable "limit_ec2_instance_types" {
+  description = "LimitEC2InstanceTypes in the OU policy."
+  default     = false
+  type        = bool
+}
+
 variable "limit_regions" {
   description = "LimitRegions in the OU policy."
   default     = false
@@ -102,6 +108,12 @@ variable "protect_iam_role_resources" {
 
 variable "allowed_regions" {
   description = "AWS Regions allowed for use (for use with the restrict regions SCP)"
+  type        = list(string)
+  default     = [""]
+}
+
+variable "allowed_ec2_instance_types" {
+  description = "EC2 instances types allowed for use"
   type        = list(string)
   default     = [""]
 }

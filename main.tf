@@ -16,6 +16,7 @@ locals {
   protect_s3_buckets_statement               = var.protect_s3_buckets ? [""] : []
   deny_s3_buckets_public_access_statement    = var.deny_s3_buckets_public_access ? [""] : []
   protect_iam_roles_statement                = var.protect_iam_roles ? [""] : []
+  limit_ec2_instance_types                   = var.limit_ec2_instance_types ? [""] : []
   limit_regions_statement                    = var.limit_regions ? [""] : []
   deny_unencrypted_object_uploads_statement  = var.require_s3_encryption ? [""] : []
   deny_incorrect_encryption_header_statement = var.require_s3_encryption ? [""] : []
@@ -186,6 +187,31 @@ data "aws_iam_policy_document" "combined_policy_block" {
         "iam:UpdateRoleDescription"
       ]
       resources = var.protect_iam_role_resources
+    }
+  }
+
+  #
+  # Restrict EC2 Instance Types
+  #
+
+  dynamic "statement" {
+    for_each = local.limit_ec2_instance_types
+    content {
+      sid    = "LimitEC2InstanceTypes"
+      effect = "Deny"
+
+      actions = [
+        "ec2:RunInstances",
+        "ec2:StartInstances"
+      ]
+
+      resources = ["*"]
+
+      condition {
+        test     = "StringNotEquals"
+        variable = "ec2:InstanceType"
+        values   = var.allowed_ec2_instance_types
+      }
     }
   }
 
