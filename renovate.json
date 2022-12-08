@@ -47,7 +47,6 @@
   "postUpdateOptions": [
     "gomodTidy"
   ],
-  "prConcurrentLimit": 2,
   "schedule": [
     "every weekend"
   ],
