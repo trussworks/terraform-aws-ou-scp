@@ -1,4 +1,4 @@
-## [Tracker Story](URL)
+## [Trello Card Title](URL)
 
 Changes proposed in this pull request:
 
