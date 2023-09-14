@@ -264,6 +264,8 @@ data "aws_iam_policy_document" "combined_policy_block" {
         "shield:*",
         "sts:*",
         "support:*",
+        "supportapp:*",
+        "supportplans:*",
         "trustedadvisor:*",
         "waf-regional:*",
         "waf:*",
