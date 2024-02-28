@@ -26,6 +26,12 @@ variable "deny_creating_iam_users" {
   type        = bool
 }
 
+variable "deny_creating_iam_only_users" {
+  description = "DenyCreatingIAMUsers Only in the OU policy."
+  default     = false
+  type        = bool
+}
+
 variable "deny_deleting_kms_keys" {
   description = "DenyDeletingKMSKeys in the OU policy."
   default     = false
