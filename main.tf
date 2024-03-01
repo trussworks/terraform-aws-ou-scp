@@ -231,7 +231,6 @@ data "aws_iam_policy_document" "combined_policy_block" {
       # https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps_examples_general.html
       not_actions = [
         "a4b:*",
-        "access-analyzer:*",
         "acm:*",
         "aws-marketplace-management:*",
         "aws-marketplace:*",
@@ -258,8 +257,12 @@ data "aws_iam_policy_document" "combined_policy_block" {
         "pricing:*",
         "route53:*",
         "route53domains:*",
+        "route53-recovery-cluster:*",
+        "route53-recovery-control-config:*",
+        "route53-recovery-readiness:*",
         "s3:GetAccountPublic*",
         "s3:ListAllMyBuckets",
+        "s3:ListMultiRegionAccessPoints",
         "s3:PutAccountPublic*",
         "shield:*",
         "sts:*",
