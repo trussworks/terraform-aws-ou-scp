@@ -237,6 +237,7 @@ data "aws_iam_policy_document" "combined_policy_block" {
         "aws-portal:*",
         "budgets:*",
         "ce:*",
+        "chatbot:*",
         "chime:*",
         "cloudfront:*",
         "config:*",
