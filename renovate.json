@@ -1,7 +1,7 @@
 {
   "extends": [
-    "config:base",
-    ":disableDependencyDashboard"
+    "config:recommended",
+    "helpers:pinGitHubActionDigests"
   ],
   "labels": [
     "dependencies"
@@ -32,10 +32,7 @@
       "groupName": "dependencies",
       "managers": [
         "terraform",
-        "gomod",
         "pre-commit",
-        "circleci",
-        "dockerfile",
         "github-actions"
       ],
       "matchUpdateTypes": [
@@ -43,9 +40,6 @@
         "patch"
       ]
     }
-  ],
-  "postUpdateOptions": [
-    "gomodTidy"
   ],
   "schedule": [
     "every weekend"
