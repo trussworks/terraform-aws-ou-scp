@@ -108,10 +108,6 @@ module "github_terraform_aws_ou_scp" {
 |------|---------|
 | aws | >= 3.0 |
 
-## Modules
-
-No modules.
-
 ## Resources
 
 | Name | Type |
@@ -125,30 +121,26 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| allowed\_ec2\_instance\_types | EC2 instances types allowed for use | `list(string)` | ```[ "" ]``` | no |
-| allowed\_regions | AWS Regions allowed for use (for use with the restrict regions SCP) | `list(string)` | ```[ "" ]``` | no |
-| deny\_all | If false, create a combined policy. If true, deny all access | `bool` | `false` | no |
-| deny\_creating\_iam\_users | DenyCreatingIAMUsers in the OU policy. | `bool` | `false` | no |
-| deny\_deleting\_cloudwatch\_logs | DenyDeletingCloudwatchLogs in the OU policy. | `bool` | `false` | no |
-| deny\_deleting\_kms\_keys | DenyDeletingKMSKeys in the OU policy. | `bool` | `false` | no |
-| deny\_deleting\_route53\_zones | DenyDeletingRoute53Zones in the OU policy. | `bool` | `false` | no |
-| deny\_leaving\_orgs | DenyLeavingOrgs in the OU policy. | `bool` | `false` | no |
-| deny\_root\_account | DenyRootAccount in the OU policy. | `bool` | `false` | no |
-| deny\_s3\_bucket\_public\_access\_resources | S3 bucket resource ARNs to block public access | `list(string)` | ```[ "" ]``` | no |
-| deny\_s3\_buckets\_public\_access | DenyS3BucketsPublicAccess in the OU policy. | `bool` | `false` | no |
-| limit\_ec2\_instance\_types | LimitEC2InstanceTypes in the OU policy. | `bool` | `false` | no |
-| limit\_regions | LimitRegions in the OU policy. | `bool` | `false` | no |
-| protect\_iam\_role\_resources | IAM role resource ARNs to protect from modification and deletion | `list(string)` | ```[ "" ]``` | no |
-| protect\_iam\_roles | ProtectIAMRoles in the OU policy. | `bool` | `false` | no |
-| protect\_s3\_bucket\_resources | S3 bucket resource ARNs to protect from bucket and object deletion | `list(string)` | ```[ "" ]``` | no |
-| protect\_s3\_buckets | ProtectS3Buckets in the OU policy. | `bool` | `false` | no |
-| require\_s3\_encryption | DenyIncorrectEncryptionHeader and DenyUnEncryptedObjectUploads in the OU policy | `bool` | `false` | no |
+| allowed_ec2_instance_types | EC2 instances types allowed for use | `list(string)` | ```[ "" ]``` | no |
+| allowed_regions | AWS Regions allowed for use (for use with the restrict regions SCP) | `list(string)` | ```[ "" ]``` | no |
+| deny_all | If false, create a combined policy. If true, deny all access | `bool` | `false` | no |
+| deny_creating_iam_users | DenyCreatingIAMUsers in the OU policy. | `bool` | `false` | no |
+| deny_deleting_cloudwatch_logs | DenyDeletingCloudwatchLogs in the OU policy. | `bool` | `false` | no |
+| deny_deleting_kms_keys | DenyDeletingKMSKeys in the OU policy. | `bool` | `false` | no |
+| deny_deleting_route53_zones | DenyDeletingRoute53Zones in the OU policy. | `bool` | `false` | no |
+| deny_leaving_orgs | DenyLeavingOrgs in the OU policy. | `bool` | `false` | no |
+| deny_root_account | DenyRootAccount in the OU policy. | `bool` | `false` | no |
+| deny_s3_bucket_public_access_resources | S3 bucket resource ARNs to block public access | `list(string)` | ```[ "" ]``` | no |
+| deny_s3_buckets_public_access | DenyS3BucketsPublicAccess in the OU policy. | `bool` | `false` | no |
+| limit_ec2_instance_types | LimitEC2InstanceTypes in the OU policy. | `bool` | `false` | no |
+| limit_regions | LimitRegions in the OU policy. | `bool` | `false` | no |
+| protect_iam_role_resources | IAM role resource ARNs to protect from modification and deletion | `list(string)` | ```[ "" ]``` | no |
+| protect_iam_roles | ProtectIAMRoles in the OU policy. | `bool` | `false` | no |
+| protect_s3_bucket_resources | S3 bucket resource ARNs to protect from bucket and object deletion | `list(string)` | ```[ "" ]``` | no |
+| protect_s3_buckets | ProtectS3Buckets in the OU policy. | `bool` | `false` | no |
+| require_s3_encryption | DenyIncorrectEncryptionHeader and DenyUnEncryptedObjectUploads in the OU policy | `bool` | `false` | no |
 | tags | Tags applied to the SCP policy | `map(string)` | `{}` | no |
 | target | OU resource to attach SCP | ```object({ name = string id = string })``` | n/a | yes |
-
-## Outputs
-
-No outputs.
 <!-- END_TF_DOCS -->
 
 ## Developer Setup
