@@ -246,6 +246,7 @@ data "aws_iam_policy_document" "combined_policy_block" {
         "ec2:DescribeRegions",
         "ec2:DescribeTransitGateways",
         "ec2:DescribeVpnGateways",
+        "ecr-public:*",
         "fms:*",
         "globalaccelerator:*",
         "health:*",
